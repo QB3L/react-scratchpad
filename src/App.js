@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import MyFunctionComponent from './MyFunctionComponent'
+// import MyFunctionComponent from './MyFunctionComponent'
 import MyClassComponent from './MyClassComponent'
 import store from './store'
 function App() {
