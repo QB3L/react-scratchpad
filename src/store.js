@@ -9,6 +9,9 @@ class Store {
   get getTotals() {
       return this.totals;
   }
+  changeTotals(value) {
+    this.totals = value;
+  }
 }
 decorate(Store, {
   title: observable,

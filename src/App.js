@@ -2,7 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import MyFunctionComponent from './MyFunctionComponent'
-
+import MyClassComponent from './MyClassComponent'
+import store from './store'
 function App() {
   return (
     <div className="App">
@@ -11,7 +12,8 @@ function App() {
         <p>
           Bienvenido!!!
         </p>
-        {/* <MyFunctionComponent total={15}></MyFunctionComponent> */}
+        <MyClassComponent></MyClassComponent>
+        <button onClick={() => {store.totals = 20}}>Click me</button>
       </header>
     </div>
   );
