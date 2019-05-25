@@ -1,13 +1,19 @@
-import { decorate, observable } from "mobx";
+import { decorate, observable, computed } from "mobx";
 
-class Store {
+class Store {    
   id = Math.random();
   title = "";
   finished = false;
+  totals = 10;
+
+  get getTotals() {
+      return this.totals;
+  }
 }
 decorate(Store, {
   title: observable,
-  finished: observable
+  finished: observable,
+  getTotals:computed
 });
 
 

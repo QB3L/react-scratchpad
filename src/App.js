@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import MyFunctionComponent from './MyFunctionComponent'
 
 function App() {
   return (
@@ -10,14 +11,7 @@ function App() {
         <p>
           Bienvenido!!!
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        {/* <MyFunctionComponent total={15}></MyFunctionComponent> */}
       </header>
     </div>
   );
