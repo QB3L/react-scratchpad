@@ -12,7 +12,7 @@ function App() {
         <p>
           Bienvenido!!!
         </p>
-        {/* <MyClassComponent></MyClassComponent> */}
+        <MyClassComponent></MyClassComponent>
         <MyFunctionComponent store={store}></MyFunctionComponent>
         <button onClick={() => {store.totals = store.getTotals + 1}}>Click me</button>
       </header>
