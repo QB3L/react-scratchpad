@@ -16,6 +16,7 @@ class Store {
 decorate(Store, {
   title: observable,
   finished: observable,
+  totals: observable,
   getTotals:computed
 });
 

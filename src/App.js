@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-// import MyFunctionComponent from './MyFunctionComponent'
+import MyFunctionComponent from './MyFunctionComponent'
 import MyClassComponent from './MyClassComponent'
 import store from './store'
 function App() {
@@ -12,8 +12,9 @@ function App() {
         <p>
           Bienvenido!!!
         </p>
-        <MyClassComponent></MyClassComponent>
-        <button onClick={() => {store.totals = 20}}>Click me</button>
+        {/* <MyClassComponent></MyClassComponent> */}
+        <MyFunctionComponent store={store}></MyFunctionComponent>
+        <button onClick={() => {store.totals = store.getTotals + 1}}>Click me</button>
       </header>
     </div>
   );
