@@ -9,13 +9,18 @@ import * as serviceWorker from './serviceWorker';
 import FlexStuff from './FlexStuff';
 
 // Routing
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, /*Link,*/ Switch, BrowserRouter as Router } from 'react-router-dom'
+
+
+const Notfound = () => <h1>Not found</h1>
+
 const routing = (
     <Router>
-      <div>
+      <Switch>
         <Route exact path="/" component={App} />
-        <Route path="/flex" component={FlexStuff} />
-      </div>
+        <Route path="/flex/:number" component={FlexStuff} />
+        <Route component={Notfound} />
+      </Switch>
     </Router>
   )
 

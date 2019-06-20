@@ -15,7 +15,7 @@ function App() {
         </p>
         <MyClassComponent></MyClassComponent>
         <MyFunctionComponent store={store}></MyFunctionComponent>
-        <Link to="/flex">PRESS TO GO TO 'Flex'</Link>
+        <Link to="/flex/10">PRESS TO GO TO 'Flex'</Link>
 
         <button onClick={() => {store.totals = store.getTotals + 1}}>
           
