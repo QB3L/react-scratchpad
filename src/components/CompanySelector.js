@@ -1,79 +1,43 @@
 // @flow
 import React, { Component } from 'react'
-import { TextField, List, ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, Typography } from '@material-ui/core'
-import {Person} from '@material-ui/icons';
+import { TextField, List, ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, Typography, Grid, Divider } from '@material-ui/core'
+import { Person } from '@material-ui/icons'
 import styled from 'styled-components'
 import _ from 'lodash'
 import { companies } from './../dummyData/companySearch'
 
-type TProps = {
-    query?: string,
-    onSelect: (data: any) => void
-}
-
-type TState = {
-    results?: any,
-    query?: string
-}
-
-type Company = {
-    companyId: string,
-    primaryName: string,
-    secondaryName: string,
-    city: string,
-    state: string,
-    country: string,
-    countryName: string,
-    cmCount: string,
-    ticker: string,
-    isConfirmed: string,
-    ciqId: string,
-    dncCode: string,
-    dncCodeName: string,
-    stockExchangeAbbr: string,
-    parent__companyId: string,
-    parent__primaryName: string,
-    parent__secondaryName: string,
-    parent__city: string,
-    parent__state: string,
-    parent__country: string,
-    parent__ticker: string,
-    parent__isConfirmed: string,
-    parent__stockExchangeAbbr: string,
-    parent__cmCount: string,
-    parent__dncCode: string,
-    parent__dncCodeName: string,
-    RANK: string
-}
-
-const CompanyListItem = styled(ListItem)`
-    && {
-        padding-left: 0;
-        height: 60px;
-    }
-`
-
-const ChildCompanyListItem = styled(ListItem)`
-    && {
-        padding-left: 36px;
-        height: 60px;
-    }
-`
-
-const ExtraCompanyInfo = styled(ListItemText)`
-    && {
-
-    }
-`
 const TableAction = styled('div')`
     && {
-        background-color:red;
+        background-color: red;
         height: 40px;
         color: red;
     }
-` 
-export class CompanySelector extends Component<TProps, TState> {
-    constructor(props: TProps) {
+`
+
+const TableRow = ({ children }) => (
+    <Grid container direction="row" justify="space-between" alignItems="flex-end">
+        {children}
+    </Grid>
+)
+
+const CompanyInfo = ({ children, leftPadding = '0px', primaryName, website }) => (
+    <Grid container item xs={9} style={{ paddingLeft: `${leftPadding}` }} direction="column" justify="space-between" alignItems="flex-start">
+        <Typography>{primaryName}</Typography>
+        <Typography variant="caption">{website || 'n/a'}</Typography>
+    </Grid>
+)
+
+const CMInfo = ({ children, cmCount }) => (
+    <Grid container item xs={3} style={{ paddingRight: '8px', height: '40px' }} justify="flex-end" alignItems="center">
+        <Person />
+        <Typography variant="caption" display="inline">
+            {cmCount}
+        </Typography>
+    </Grid>
+)
+
+export class CompanySelector extends Component {
+    constructor(props) {
         super(props)
         this.state = { results: undefined, query: 'Google' }
         this.search = _.debounce(this.search.bind(this), 300)
@@ -84,19 +48,19 @@ export class CompanySelector extends Component<TProps, TState> {
         this.search('Google')
     }
 
-    search = async (query: string) => {
-        const response = this.organizeCompanies(companies);
+    search = async query => {
+        const response = this.organizeCompanies(companies)
         this.setState({ results: response })
     }
 
-    createCompany = async() => {
-        const companyName = this.state.query;
-        this.setState({results:[]})
+    createCompany = async () => {
+        const companyName = this.state.query
+        this.setState({ results: [] })
         try {
             //TODO: Should we fetch the company now to return it with all the info?
-            const response = {COMPANY_ID:19037117} //   await createCompany(companyName)
-        } catch(e) {
-            console.log(e.message);
+            const response = { COMPANY_ID: 19037117 } //   await createCompany(companyName)
+        } catch (e) {
+            console.log(e.message)
         }
     }
 
@@ -115,15 +79,16 @@ export class CompanySelector extends Component<TProps, TState> {
             dncCode: company.parent__dncCode,
             dncCodeName: company.parent__dncCodeName,
             RANK: company.RANK,
-            childCompanies:[company]
+            childCompanies: [company]
         }
     }
     organizeCompanies(companies) {
         const organized = companies.reduce((final, company, index, companies) => {
-            const isParentCompany = company.parent__companyId === null;
+            const isParentCompany = company.parent__companyId === null
             if (isParentCompany) {
-                final[company.companyId] = company;
-            } else { //Check if it already exists
+                final[company.companyId] = company
+            } else {
+                //Check if it already exists
                 let existingCompany = final[company.parent__companyId]
                 if (existingCompany) {
                     // Add to childCompanies
@@ -136,7 +101,7 @@ export class CompanySelector extends Component<TProps, TState> {
             return final
         }, {})
         // Turn into an array
-        let results = [];
+        let results = []
         for (let companyId in organized) {
             results.push(organized[companyId])
         }
@@ -145,7 +110,7 @@ export class CompanySelector extends Component<TProps, TState> {
     render() {
         const { results, query } = this.state
         return (
-            <div style={{padding:'24px'}}>
+            <div style={{ padding: '24px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <TextField
                         onChange={e => {
@@ -161,35 +126,33 @@ export class CompanySelector extends Component<TProps, TState> {
 
                     <List style={{ overflowY: 'scroll', flex: 1 }}>
                         {results ? (
-                            results.map((company: Company) => {
-                                const { companyId, primaryName, cmCount, parent__primaryName:parentName, childCompanies, website } = company
+                            results.map((company, index) => {
+                                const { companyId, primaryName, cmCount, childCompanies, website } = company
                                 let subCompanies = ['']
                                 if (childCompanies) {
                                     subCompanies = []
-                                    childCompanies.forEach((subComp) => {
-                                        const {primaryName, cmCount, website} = subComp
+                                    childCompanies.forEach(subComp => {
+                                        const { companyId, primaryName, cmCount, website } = subComp
                                         subCompanies.push(
-                                            <ChildCompanyListItem>
-                                                <ListItemText primary={primaryName} secondary={`${website || 'n/a'}`}></ListItemText>
-                                                <ListItemSecondaryAction>
-                                                    <Person />
-                                                    <Typography variant='subtitle1' display='inline'>{cmCount}</Typography>
-                                                </ListItemSecondaryAction>
-                                            </ChildCompanyListItem>
+                                            <div key={`sub-${companyId}-${index}`}>
+                                                <TableRow>
+                                                    <CompanyInfo primaryName={primaryName} website={website} leftPadding="24px" />
+                                                    <CMInfo cmCount={cmCount} />
+                                                </TableRow>
+                                                <Divider style={{ marginLeft: '24px' }} />
+                                            </div>
                                         )
                                     })
                                 }
                                 return (
-                                    <>
-                                    <CompanyListItem divider={true} key={companyId} onClick={() => console.log(company)}>
-                                    <ListItemText primary={primaryName} secondary={`${website || 'n/a'}`}></ListItemText>
-                                    <ListItemSecondaryAction>
-                                        <Person />
-                                        <Typography variant='subtitle1' display='inline'>{cmCount}</Typography>
-                                    </ListItemSecondaryAction>
-                                    </CompanyListItem>
-                                    {subCompanies}
-                                    </>
+                                    <div key={companyId}>
+                                        <TableRow>
+                                            <CompanyInfo primaryName={primaryName} website={website} />
+                                            <CMInfo cmCount={cmCount} />
+                                        </TableRow>
+                                        <Divider />
+                                        {subCompanies}
+                                    </div>
                                 )
                             })
                         ) : (
@@ -197,9 +160,7 @@ export class CompanySelector extends Component<TProps, TState> {
                         )}
                     </List>
                 </div>
-                <TableAction 
-                    onClick={this.createCompany}
-                >CREATE</TableAction>
+                <TableAction onClick={this.createCompany}>CREATE</TableAction>
             </div>
         )
     }
