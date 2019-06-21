@@ -142,9 +142,6 @@ export class CompanySelector extends Component<TProps, TState> {
         }
         return results
     }
-    itemsFromResults(results) {
-
-    }
     render() {
         const { results, query } = this.state
         return (
