@@ -6,7 +6,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 //Extra Routes
-import FlexStuff from './FlexStuff';
+import FlexStuff from './components/FlexStuff';
+import CompanySelector from './components/CompanySelector';
 
 // Routing
 import { Route, /*Link,*/ Switch, BrowserRouter as Router } from 'react-router-dom'
@@ -19,6 +20,7 @@ const routing = (
       <Switch>
         <Route exact path="/" component={App} />
         <Route path="/flex/:number" component={FlexStuff} />
+        <Route path="/company" component={CompanySelector} />
         <Route component={Notfound} />
       </Switch>
     </Router>

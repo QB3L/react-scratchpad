@@ -1,8 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import MyFunctionComponent from './MyFunctionComponent'
-import MyClassComponent from './MyClassComponent'
+import MyFunctionComponent from './components/MyFunctionComponent'
+import MyClassComponent from './components/MyClassComponent'
 import store from './store'
 import { Link } from 'react-router-dom'
 function App() {

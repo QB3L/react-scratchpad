@@ -1,6 +1,6 @@
 import React from "react";
 import { observer } from "mobx-react";
-import store from './store'
+import store from '../store'
 
 const c = class MyClassComponent extends React.Component {
     render() {
