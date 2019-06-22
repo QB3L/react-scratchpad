@@ -14,21 +14,48 @@ const TableAction = styled('div')`
     }
 `
 
-const TableRow = ({ children }) => (
-    <Grid container direction="row" justify="space-between" alignItems="flex-end">
-        {children}
-    </Grid>
-)
+const TableRow = ({ children, company, isChildCompany }) => {
+    const { primaryName, cmCount, website, dncCodeName, countryName, state, city } = company
+    const DNCDescription = 'Do Not Contact'
+    const cleanCountry = countryName ? countryName.trim() : null
+    const cleanState = state ? state.trim() : null
+    const cleanCity = city ? city.trim() : null
+    const rowHeight = cleanCountry || cleanState || cleanCity ? '60px' : '40px'
+    return (
+        <Grid style={{ height: rowHeight }} container direction="row" justify="space-between" alignItems="flex-end">
+            <CompanyInfo
+                country={cleanCountry}
+                state={cleanState}
+                city={cleanCity}
+                primaryName={primaryName}
+                website={website}
+                leftPadding={isChildCompany ? '24px' : '0px'}
+            />
+            <CMInfo isDNC={dncCodeName === DNCDescription} cmCount={cmCount} />
+        </Grid>
+    )
+}
 
-const CompanyInfo = ({ children, leftPadding = '0px', primaryName, website }) => (
-    <Grid container item xs={9} style={{ paddingLeft: `${leftPadding}` }} direction="column" justify="space-between" alignItems="flex-start">
+const CompanyInfo = ({ children, leftPadding = '0px', primaryName, country, state, city }) => (
+    <Grid container item xs={9} style={{ height: '100%', paddingLeft: `${leftPadding}` }} direction="column" justify="space-evenly" alignItems="flex-start">
         <Typography>{primaryName}</Typography>
-        <Typography variant="caption">{website || 'n/a'}</Typography>
+        <Typography variant="caption">
+            {city ? `${city}, ` : ''}
+            {state ? `${state}, ` : ''}
+            {country ? `${country}` : ' '}
+        </Typography>
+
+        {/* <Typography variant="caption">{website || 'n/a'}</Typography> */}
     </Grid>
 )
 
-const CMInfo = ({ children, cmCount }) => (
-    <Grid container item xs={3} style={{ paddingRight: '8px', height: '40px' }} justify="flex-end" alignItems="center">
+const CMInfo = ({ children, cmCount, dncCode }) => (
+    <Grid container item xs={3} style={{ paddingRight: '8px', height: '100%' }} justify="flex-end" alignItems="center">
+        {dncCode && (
+            <Typography style={{ color: '#D32f2F' }} variant="caption" display="inline">
+                DNC
+            </Typography>
+        )}
         <Person />
         <Typography variant="caption" display="inline">
             {cmCount}
@@ -109,6 +136,7 @@ export class CompanySelector extends Component {
     }
     render() {
         const { results, query } = this.state
+
         return (
             <div style={{ padding: '24px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -127,18 +155,15 @@ export class CompanySelector extends Component {
                     <List style={{ overflowY: 'scroll', flex: 1 }}>
                         {results ? (
                             results.map((company, index) => {
-                                const { companyId, primaryName, cmCount, childCompanies, website } = company
+                                const { companyId, childCompanies } = company
                                 let subCompanies = ['']
                                 if (childCompanies) {
                                     subCompanies = []
                                     childCompanies.forEach(subComp => {
-                                        const { companyId, primaryName, cmCount, website } = subComp
+                                        const { companyId } = subComp
                                         subCompanies.push(
                                             <div key={`sub-${companyId}-${index}`}>
-                                                <TableRow>
-                                                    <CompanyInfo primaryName={primaryName} website={website} leftPadding="24px" />
-                                                    <CMInfo cmCount={cmCount} />
-                                                </TableRow>
+                                                <TableRow company={subComp} isChildCompany={true} />
                                                 <Divider style={{ marginLeft: '24px' }} />
                                             </div>
                                         )
@@ -146,10 +171,7 @@ export class CompanySelector extends Component {
                                 }
                                 return (
                                     <div key={companyId}>
-                                        <TableRow>
-                                            <CompanyInfo primaryName={primaryName} website={website} />
-                                            <CMInfo cmCount={cmCount} />
-                                        </TableRow>
+                                        <TableRow company={company} />
                                         <Divider />
                                         {subCompanies}
                                     </div>
