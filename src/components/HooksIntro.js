@@ -8,7 +8,7 @@ They let you use React state and lifecycle features within function components.
  * - Only call Hooks at the top level
  * - Only call Hooks from React function components (not regular JavaScript functions) or from custom Hooks
  */
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 // WITHOUT HOOKS we need to make a class component so we can use state
 export class TodoNOHooks extends React.Component {
@@ -67,6 +67,28 @@ export function TodoWithHooks() {
         setTodos([...todos, { text: value }])
         setValue('')
     }
+
+    // useEffect is the new way to add stuff you would have added in
+    // componentWillMount, componentDidMount
+    // This one executrs on mount and on any re-render
+    useEffect(function() {
+        window.addEventListener('scroll', () => {})
+
+        // Your callback function should return a cleanup function
+        // if you need to clean anything up (remove event listeners, cancel API requests, etc)
+        return function cleanup() {
+            window.removeEventListener('scroll', () => {})
+        }
+    })
+
+    // useEffect also accepts a second argument,
+    // a “conditions array”. Think of it as “the pieces of data that this callback depends upon”.
+    // this one executes on mount and anytime 'value' changes
+    useEffect(function() {}, [value])
+
+    // This one executes only on mount
+    useEffect(function() {}, [])
+
     return (
         <div>
             <h3>Todos:</h3>
