@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "@welldone-software/why-did-you-render": "^3.2.1",
     "flow-bin": "^0.102.0-rc"
   }
 }
