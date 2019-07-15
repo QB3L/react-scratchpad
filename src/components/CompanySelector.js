@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react'
-import { TextField, List, ListItem, ListItemText, ListItemSecondaryAction, ListItemIcon, Typography, Grid, Divider } from '@material-ui/core'
+import { TextField, List, Typography, Grid, Divider } from '@material-ui/core'
 import { Person } from '@material-ui/icons'
 import styled from 'styled-components'
 import _ from 'lodash'
@@ -81,14 +81,7 @@ export class CompanySelector extends Component {
     }
 
     createCompany = async () => {
-        const companyName = this.state.query
         this.setState({ results: [] })
-        try {
-            //TODO: Should we fetch the company now to return it with all the info?
-            const response = { COMPANY_ID: 19037117 } //   await createCompany(companyName)
-        } catch (e) {
-            console.log(e.message)
-        }
     }
 
     transformedToParentWithSubCompany(company) {

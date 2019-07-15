@@ -43,8 +43,8 @@ export class TodoNOHooks extends React.Component {
             <div>
                 <h3>Todos:</h3>
                 <div className="todo-list">
-                    {this.state.todos.map(todo => (
-                        <li>{todo.text}</li>
+                    {this.state.todos.map((todo, index) => (
+                        <li key={index}>{todo.text}</li>
                     ))}
                 </div>
                 <form onSubmit={this.handleSubmit}>
@@ -93,8 +93,8 @@ export function TodoWithHooks() {
         <div>
             <h3>Todos:</h3>
             <div className="todo-list">
-                {todos.map(todo => (
-                    <li>{todo.text}</li>
+                {todos.map((todo, index) => (
+                    <li key={index}>{todo.text}</li>
                 ))}
             </div>
             <form onSubmit={handleSubmit}>

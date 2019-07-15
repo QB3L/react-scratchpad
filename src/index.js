@@ -15,6 +15,7 @@ import { Route, /*Link,*/ Switch, BrowserRouter as Router } from 'react-router-d
 
 if (process.env.NODE_ENV !== 'production') {
     const whyDidYouRender = require('@welldone-software/why-did-you-render')
+    console.log('running why did you render')
     whyDidYouRender(React)
 }
 
@@ -29,9 +30,9 @@ const routing = (
     <Router>
         <Switch>
             <Route exact path="/" component={App} />
-            {/* <Profiler id="Flex" onRender={logProfiler}> */}
-            <Route path="/flex/:number" component={FlexStuff} />
-            {/* </Profiler> */}
+            <Profiler id="Flex" onRender={logProfiler}>
+                <Route path="/flex/:number" component={FlexStuff} />
+            </Profiler>
             <Route path="/todo_no_hooks" component={TodoNOHooks} />
             <Route path="/todo_with_hooks" component={TodoWithHooks} />
             <Route path="/company" component={CompanySelector} />
